@@ -1,4 +1,4 @@
-# Controle de Estoque — Front
+# 🧁 Controle de Estoque — Front
 
 Front-end de um sistema de controle de estoque para restaurantes e
 confeitarias: login/cadastro de usuários e gestão de ingredientes com
@@ -11,7 +11,7 @@ em como explicar as decisões numa entrevista técnica.
 
 ---
 
-## Sumário
+## 📑 Sumário
 
 - [Visão geral](#visão-geral)
 - [Stack e principais decisões técnicas](#stack-e-principais-decisões-técnicas)
@@ -28,18 +28,18 @@ em como explicar as decisões numa entrevista técnica.
 
 ---
 
-## Visão geral
+## 🔎 Visão geral
 
 O sistema tem 3 telas principais, todas protegidas por login:
 
-1. **Estoque atual** — lista de ingredientes com quantidade, estoque
+1. ### 📦 Estoque atual — lista de ingredientes com quantidade, estoque
    mínimo, validade, valor da última compra e alertas visuais (vencido,
    vencendo em breve, estoque baixo). Colunas ordenáveis clicando no
    cabeçalho.
-2. **Entradas** — histórico de compras. Uma entrada pode ficar
+2. ### 📥 Entradas — histórico de compras. Uma entrada pode ficar
    **pendente** (pedido feito, ainda não chegou) e só soma ao estoque
    quando é marcada como recebida.
-3. **Saídas** — histórico de uso/venda/perda. Ao registrar, o sistema
+3. ### 📤 Saídas — histórico de uso/venda/perda. Ao registrar, o sistema
    valida se há estoque suficiente antes de descontar.
 
 O ponto central de design é que **o estoque atual nunca é editado
@@ -50,7 +50,7 @@ planilha onde qualquer um sobrescreve o número a qualquer momento — o que é
 mais próximo de como um controle de estoque real funciona, e é o tipo de
 decisão que costuma render uma boa conversa em entrevista.
 
-## Stack e principais decisões técnicas
+## 🛠️ Stack e principais decisões técnicas
 
 | Escolha | Por quê |
 |---|---|
@@ -62,7 +62,7 @@ decisão que costuma render uma boa conversa em entrevista.
 | **`lucide-react`** | Biblioteca de ícones leve, usada só para clareza visual (status, ações). |
 | **Nginx no Docker (não `serve` do Node)** | Em produção, servir arquivos estáticos com Nginx é mais leve e é o padrão de mercado — dá pra falar sobre multi-stage build e por que a imagem final não carrega o Node nem o código-fonte. |
 
-## Como rodar o projeto
+## ▶️ Como rodar o projeto
 
 ```bash
 npm install
@@ -72,11 +72,11 @@ npm run dev
 
 Abra `http://localhost:5173` — você será redirecionado para `/login`.
 
-> O backend ainda não está integrado neste repositório. Enquanto isso, use
+> ⚠️ O backend ainda não está integrado neste repositório. Enquanto isso, use
 > o [login de demonstração](#login-de-demonstração-sem-backend) para
 > navegar pelo sistema.
 
-## Rodando com Docker
+## 🐳 Rodando com Docker
 
 O projeto tem um `Dockerfile` **multi-stage**: uma etapa instala as
 dependências e roda `npm run build`; a segunda etapa serve os arquivos
@@ -97,7 +97,7 @@ do `build` — por isso ela é passada como `--build-arg` no Docker, e não
 como variável de ambiente de runtime (que só funcionaria se o app lesse
 `process.env` no servidor, o que não é o caso de uma SPA estática).
 
-## Estrutura de pastas
+## 📁 Estrutura de pastas
 
 ```
 src/
@@ -121,7 +121,7 @@ A escolha de separar `api/` de `context/` é proposital: o Context sabe
 mas não sabe *como* a requisição é feita por baixo dos panos. Se o formato
 da API mudar amanhã, só `authApi.js` muda.
 
-## Funcionalidades
+## ✨ Funcionalidades
 
 **Estoque atual**
 - Alertas automáticos por item: vencido, vencendo em ≤ 3 dias, ou abaixo
@@ -146,7 +146,7 @@ da API mudar amanhã, só `authApi.js` muda.
   disponível.
 - Excluir uma saída devolve a quantidade ao estoque.
 
-## Como funciona a autenticação
+## 🔐 Como funciona a autenticação
 
 1. No login, o usuário informa **usuário** (não email) e senha.
 2. `entrar()` chama `POST /token`, seguindo o padrão **OAuth2** do
@@ -163,7 +163,7 @@ da API mudar amanhã, só `authApi.js` muda.
    a página. `RotaProtegida` verifica se existe token salvo; se não,
    redireciona para `/login`.
 
-## Login de demonstração (sem backend)
+## 🧪 Login de demonstração (sem backend)
 
 Enquanto o backend não está integrado, dá pra testar o app com um login
 que não faz nenhuma chamada de rede:
@@ -175,7 +175,7 @@ Esse bloco está isolado e comentado em `src/context/AuthContext.jsx`,
 dentro da função `entrar()` — procure por `MODO DEMO`. É a primeira coisa
 a remover quando o backend estiver de fato integrado.
 
-## Contrato esperado da API
+## 🔌 Contrato esperado da API
 
 O formato abaixo é baseado num backend de referência em FastAPI (OAuth2 +
 JWT). Se o backend final tiver nomes de campos ou rotas diferentes, o
@@ -219,7 +219,7 @@ Authorization: Bearer {access_token}
 > conectada a um backend — os dados vivem em memória, no navegador, e são
 > perdidos ao recarregar a página. Ver [próximos passos](#limitações-conhecidas-e-próximos-passos).
 
-## Decisões de design (UI)
+## 🎨 Decisões de design (UI)
 
 - **Paleta escura inspirada em confeitaria/padaria**: tons de café torrado
   e dourado-crosta, em vez do azul/roxo genérico de SaaS. Cores de status
@@ -235,7 +235,7 @@ Authorization: Bearer {access_token}
   verde), em vez de pintar a linha inteira — mantém a tabela legível mesmo
   com muitos alertas ativos ao mesmo tempo.
 
-## Limitações conhecidas e próximos passos
+## 🚧 Limitações conhecidas e próximos passos
 
 Ser transparente sobre isso é parte do que este README quer demonstrar:
 
@@ -253,7 +253,7 @@ Ser transparente sobre isso é parte do que este README quer demonstrar:
 - **IDs gerados no cliente** (`Date.now()`): funciona para uma
   demonstração, mas um backend real deve ser a fonte da verdade para IDs.
 
-## Perguntas que eu me faria numa code review
+## 🧐 Perguntas que eu me faria numa code review
 
 Deixo aqui de propósito, como um exercício de autocrítica — são os pontos
 que eu mesmo questionaria se estivesse revisando este código de outra
